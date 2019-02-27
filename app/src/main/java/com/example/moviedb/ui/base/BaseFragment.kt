@@ -10,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import com.example.moviedb.R
 
 abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel> : Fragment() {
     lateinit var viewBinding: ViewBinding
@@ -41,9 +43,6 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.apply {
-            isLoading.observe(viewLifecycleOwner, Observer {
-                handleShowLoading(it == true)
-            })
             errorLoading.observe(viewLifecycleOwner, Observer {
                 handleErrorMessage(it)
             })
@@ -54,28 +53,41 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
         toast(message)
     }
 
-    fun handleShowLoading(isLoading: Boolean) {
-        if (isLoading) showLoading() else hideLoading()
-    }
-
-    fun showLoading() {
-        hideLoading()
-        loadingProgress?.visibility = View.VISIBLE
-    }
-
-    fun hideLoading() {
-        if (loadingProgress != null) {
-            loadingProgress.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.isLoading.removeObservers(this)
-        viewModel.errorLoading.removeObservers(this)
-    }
-
     fun toast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
+    fun addFragment(
+        fragment: Fragment, TAG: String?, addToBackStack: Boolean = false
+    ) {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.add(R.id.container, fragment, TAG)
+            ?.apply {
+                commitTransaction(this, addToBackStack)
+            }
+    }
+
+    fun replaceFragment(
+        fragment: Fragment,
+        TAG: String?,
+        addToBackStack: Boolean = false
+    ) {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.container, fragment, TAG)
+            ?.apply {
+                commitTransaction(this, addToBackStack)
+            }
+    }
+
+    fun findFragment(TAG: String?): Fragment? {
+        return activity?.supportFragmentManager?.findFragmentByTag(TAG)
+    }
+
+    private fun commitTransaction(
+        transaction: FragmentTransaction, addToBackStack: Boolean = false
+    ) {
+        if (addToBackStack) transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
 }
