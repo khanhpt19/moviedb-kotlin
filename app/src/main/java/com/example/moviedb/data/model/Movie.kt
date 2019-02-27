@@ -25,9 +25,6 @@ data class Movie(
     @SerializedName("title")
     val title: String? = null,
 
-    @SerializedName("genre_ids")
-    val genreIds: List<Integer>? = null,
-
     @SerializedName("poster_path")
     val posterPath: String? = null,
 
