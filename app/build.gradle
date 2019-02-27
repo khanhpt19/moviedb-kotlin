@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -20,6 +22,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
+    flavorDimensions("default")
+
+    compileOptions {
+        setTargetCompatibility(1.8)
+        setSourceCompatibility(1.8)
+    }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
@@ -31,4 +48,51 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+
+    kapt 'com.android.databinding:compiler:3.1.4'
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.0.0"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0"
+
+    // room
+    implementation "androidx.room:room-runtime:2.0.0"
+    kapt "androidx.room:room-compiler:2.0.0"
+    implementation "androidx.room:room-rxjava2:2.0.0"
+
+    // navigation
+    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0-beta02"
+    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-beta02"
+
+    // ktx
+    implementation "androidx.core:core-ktx:1.0.1"
+
+    // rx
+    implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+    // gson
+    implementation "com.google.code.gson:gson:2.8.5"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.11.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:4.8.0"
+    kapt "com.github.bumptech.glide:compiler:4.8.0"
+
+    // koin
+    implementation 'org.koin:koin-core:1.0.2'
+    implementation 'org.koin:koin-android:1.0.2'
+    implementation 'org.koin:koin-androidx-scope:1.0.2'
+    implementation 'org.koin:koin-androidx-viewmodel:1.0.2'
 }
