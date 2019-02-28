@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.moviedb.data.model.Movie" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_movie"
+            imageSrc="@{item.poster_path}"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
+            app:layout_constraintStart_toEndOf="@id/image_movie" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:text="@{item.releaseDate}"
+            app:layout_constraintStart_toStartOf="@id/text_title"
+            app:layout_constraintBottom_toTopOf="@id/text_star" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.voteAverage}"
+            app:layout_constraintStart_toStartOf="@id/text_release_date"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_star_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/text_star"
+            app:layout_constraintStart_toEndOf="@id/text_star" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
