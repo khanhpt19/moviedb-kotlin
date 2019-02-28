@@ -13,7 +13,7 @@ class MovieAdapter : BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.Item
     }
 
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id && oldItem.title == newItem.title
     }
 }) {
     override fun getLayout(viewType: Int): Int {
