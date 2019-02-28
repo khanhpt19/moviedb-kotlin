@@ -31,7 +31,6 @@ android {
             buildConfigField 'String', "END_POINT_URL", '"https://api.themoviedb.org/3/"'
         }
         prd {
-            applicationIdSuffix = ".prd"
             manifestPlaceholders = [applicationName: "APP-PRD"]
             buildConfigField 'String', "END_POINT_URL", '"https://api.themoviedb.org/3/"'
         }
