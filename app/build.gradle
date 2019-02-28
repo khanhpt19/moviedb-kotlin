@@ -15,11 +15,24 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "API_KEY", "\"${API_KEY}\""
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        dev {
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders = [applicationName: "APP-DEV"]
+            buildConfigField 'String', "END_POINT_URL", '"https://api.themoviedb.org/3/"'
+        }
+        prd {
+            manifestPlaceholders = [applicationName: "APP-PRD"]
+            buildConfigField 'String', "END_POINT_URL", '"https://api.themoviedb.org/3/"'
         }
     }
 
