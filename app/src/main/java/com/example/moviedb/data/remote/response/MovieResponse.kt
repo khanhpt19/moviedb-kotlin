@@ -7,7 +7,7 @@ class MovieResponse {
     @SerializedName("page")
     val page: Int? = null
     @SerializedName("results")
-    val movies: List<Movie>? = null
+    val movies: ArrayList<Movie>? = null
     @SerializedName("total_results")
     val total_results: Int? = null
     @SerializedName("total_pages")

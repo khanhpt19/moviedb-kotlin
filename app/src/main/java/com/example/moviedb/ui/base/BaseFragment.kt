@@ -13,8 +13,9 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.example.moviedb.BR
 import com.example.moviedb.R
+import com.example.moviedb.data.model.Movie
 
-abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel> : Fragment() {
+abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel<Movie>> : Fragment() {
     lateinit var viewBinding: ViewBinding
     abstract val viewModel: ViewModel
 
@@ -34,6 +35,7 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.apply {
+            root.isSelected = true
             setVariable(BR.viewModel, viewModel)
             setLifecycleOwner(viewLifecycleOwner)
             executePendingBindings()

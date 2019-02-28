@@ -26,6 +26,8 @@
                 android:id="@+id/recycler_view_popular"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
                 tools:listitem="@layout/item_movie"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
