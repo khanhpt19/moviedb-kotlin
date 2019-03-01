@@ -33,7 +33,7 @@ abstract class BaseViewModel<Item>() : ViewModel() {
     }
 
     fun onLoadSuccess(moviesResponse: List<Item>?) {
-        val listMovie = movies.value ?: ArrayList()
+        val listMovie = ArrayList<Item>()
         listMovie.addAll(moviesResponse ?: listOf())
         movies.value = listMovie
     }

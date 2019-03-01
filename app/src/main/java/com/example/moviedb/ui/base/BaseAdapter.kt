@@ -10,16 +10,21 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.moviedb.BR
 import java.util.concurrent.Executors
 
-abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUtil.ItemCallback<Item>) :
+abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
+    callBack: DiffUtil.ItemCallback<Item>,
+    private var listener: ItemClickListener
+) :
     ListAdapter<Item, BaseViewHolder<ViewBinding>>(
         AsyncDifferConfig.Builder<Item>(callBack)
             .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor()).build()
     ) {
 
-    lateinit var listener: ItemClickListener
-
     override fun submitList(list: List<Item>?) {
-        super.submitList(ArrayList<Item>(list ?: listOf()))
+        val newList = mutableListOf<Item>()
+        if (list != null) {
+            newList.addAll(list)
+        }
+        super.submitList(newList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> {

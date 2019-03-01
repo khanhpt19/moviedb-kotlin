@@ -35,8 +35,8 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.apply {
-            root.isSelected = true
             setVariable(BR.viewModel, viewModel)
+            root.isClickable = true
             setLifecycleOwner(viewLifecycleOwner)
             executePendingBindings()
         }
@@ -49,7 +49,10 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
                 handleErrorMessage(it)
             })
         }
+        initComponents(viewBinding)
     }
+
+    abstract fun initComponents(viewBinding: ViewDataBinding)
 
     fun handleErrorMessage(message: String) {
         toast(message)
@@ -80,6 +83,23 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
                 commitTransaction(this, addToBackStack)
             }
     }
+
+    fun replaceFragmentToActivity(
+        fragment: Fragment, container: Int, TAG: String?, addToBackStack: Boolean = false
+    ) {
+        activity?.supportFragmentManager?.beginTransaction()?.replace(
+            container, fragment, TAG
+        )?.apply { commitTransaction(this, addToBackStack) }
+    }
+
+    fun addFragmentToActivity(
+        fragment: Fragment, container: Int, TAG: String?, addToBackStack: Boolean = false
+    ) {
+        activity?.supportFragmentManager?.beginTransaction()?.add(
+            container, fragment, TAG
+        )?.apply { commitTransaction(this, addToBackStack) }
+    }
+
 
     fun findFragment(TAG: String?): Fragment? {
         return activity?.supportFragmentManager?.findFragmentByTag(TAG)

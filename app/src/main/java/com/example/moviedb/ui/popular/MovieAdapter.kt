@@ -5,8 +5,9 @@ import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.databinding.ItemMovieBinding
 import com.example.moviedb.ui.base.BaseAdapter
+import com.example.moviedb.ui.base.ItemClickListener
 
-class MovieAdapter : BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.ItemCallback<Movie>() {
+class MovieAdapter(itemClickListener: ItemClickListener) : BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.ItemCallback<Movie>() {
 
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem.id == newItem.id
@@ -15,7 +16,7 @@ class MovieAdapter : BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.Item
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem.id == newItem.id && oldItem.title == newItem.title
     }
-}) {
+}, itemClickListener) {
     override fun getLayout(viewType: Int): Int {
         return R.layout.item_movie
     }
