@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel<Item>() : ViewModel() {
     val isLoading = MutableLiveData<Boolean>()
     val errorLoading = MutableLiveData<String>()
+    val movies = MutableLiveData<ArrayList<Item>>()
 
     val compositeDisposable = CompositeDisposable()
 
@@ -29,5 +30,15 @@ abstract class BaseViewModel : ViewModel() {
 
     fun onDestroy() {
         compositeDisposable.clear()
+    }
+
+    fun onLoadSuccess(moviesResponse: List<Item>?) {
+        val listMovie = movies.value ?: ArrayList()
+        listMovie.addAll(moviesResponse ?: listOf())
+        movies.value = listMovie
+    }
+
+    fun onLoadFail(throwable: Throwable) {
+        errorLoading.value = throwable.toString()
     }
 }

@@ -14,6 +14,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        replaceFragment(PopularFragment.newInstance(), PopularFragment.TAG)
 
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -33,9 +34,7 @@ class MainActivity : BaseActivity() {
                 }
                 else -> false
             }
-
         }
-
     }
 
     fun replaceFragment(fragment: Fragment, TAG: String) {
