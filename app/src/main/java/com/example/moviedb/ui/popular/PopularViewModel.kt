@@ -13,7 +13,7 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
         addDisposable(
             repository.getMovies(hashMap)
                 .subscribe({
-                    onLoadSuccess(it.movies!!)
+                    onLoadSuccess(it.movies)
                 }, {
                     onLoadFail(it)
                 })
