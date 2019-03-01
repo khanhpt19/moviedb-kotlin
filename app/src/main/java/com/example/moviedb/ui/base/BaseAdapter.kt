@@ -16,6 +16,8 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUt
             .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor()).build()
     ) {
 
+    lateinit var listener: ItemClickListener
+
     override fun submitList(list: List<Item>?) {
         super.submitList(ArrayList<Item>(list ?: listOf()))
     }
@@ -39,10 +41,19 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUt
         } catch (e: IndexOutOfBoundsException) {
             bind(holder.binding, position)
         }
+        holder.itemView.setOnClickListener({ listener.onItemClick(position) })
         holder.binding.executePendingBindings()
+    }
+
+    fun setOnItemClick(itemClickListener: ItemClickListener) {
+        listener = itemClickListener
     }
 
     protected open fun bindView(binding: ViewBinding, item: Item, position: Int) {}
 
     protected open fun bind(binding: ViewBinding, position: Int) {}
+}
+
+interface ItemClickListener {
+    fun onItemClick(position: Int)
 }
