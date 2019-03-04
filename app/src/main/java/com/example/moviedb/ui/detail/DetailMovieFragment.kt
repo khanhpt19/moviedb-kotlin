@@ -1,7 +1,6 @@
 package com.example.moviedb.ui.detail
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
@@ -28,11 +27,5 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding, DetailMovie
     override fun initComponents(viewBinding: ViewDataBinding) {
         val movie: Movie? = arguments?.getParcelable(MOVIE)
         viewModel.movie.value = movie
-        (activity as AppCompatActivity).apply {
-            supportActionBar?.apply {
-                title = movie?.title
-                setDisplayHomeAsUpEnabled(true)
-            }
-        }
     }
 }

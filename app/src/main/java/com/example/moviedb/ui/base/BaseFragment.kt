@@ -111,5 +111,4 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
         if (addToBackStack) transaction.addToBackStack(null)
         transaction.commit()
     }
-
 }
