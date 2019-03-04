@@ -25,6 +25,7 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding, DetailMovie
     override val layoutId: Int = R.layout.fragment_detail_movie
 
     override fun initComponents(viewBinding: ViewDataBinding) {
-
+        val movie: Movie? = arguments?.getParcelable(MOVIE)
+        viewModel.movie.value = movie
     }
 }
