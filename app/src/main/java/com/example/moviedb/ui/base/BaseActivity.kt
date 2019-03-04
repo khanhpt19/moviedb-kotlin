@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
 import com.example.moviedb.data.model.Movie
 
-abstract class BaseActivity<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel<Movie>> : AppCompatActivity(),
-    LifecycleOwner {
+abstract class BaseActivity<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel<Movie>> : AppCompatActivity() {
     lateinit var viewBinding: ViewBinding
     abstract val viewModel: ViewModel
 

@@ -11,8 +11,7 @@ import com.example.moviedb.BR
 import java.util.concurrent.Executors
 
 abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
-    callBack: DiffUtil.ItemCallback<Item>,
-    private var listener: ItemClickListener
+    callBack: DiffUtil.ItemCallback<Item>
 ) :
     ListAdapter<Item, BaseViewHolder<ViewBinding>>(
         AsyncDifferConfig.Builder<Item>(callBack)
@@ -32,7 +31,9 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
             DataBindingUtil.inflate<ViewBinding>(
                 LayoutInflater.from(parent.context),
                 getLayout(viewType), parent, false
-            )
+            ).apply {
+                itemBinding(this)
+            }
         )
     }
 
@@ -46,19 +47,12 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
         } catch (e: IndexOutOfBoundsException) {
             bind(holder.binding, position)
         }
-        holder.itemView.setOnClickListener({ listener.onItemClick(position) })
         holder.binding.executePendingBindings()
-    }
-
-    fun setOnItemClick(itemClickListener: ItemClickListener) {
-        listener = itemClickListener
     }
 
     protected open fun bindView(binding: ViewBinding, item: Item, position: Int) {}
 
     protected open fun bind(binding: ViewBinding, position: Int) {}
-}
 
-interface ItemClickListener {
-    fun onItemClick(position: Int)
+    protected open fun itemBinding(binding: ViewBinding) {}
 }

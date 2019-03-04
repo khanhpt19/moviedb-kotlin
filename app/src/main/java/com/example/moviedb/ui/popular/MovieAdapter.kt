@@ -5,20 +5,29 @@ import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.databinding.ItemMovieBinding
 import com.example.moviedb.ui.base.BaseAdapter
-import com.example.moviedb.ui.base.ItemClickListener
 
-class MovieAdapter(itemClickListener: ItemClickListener) : BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.ItemCallback<Movie>() {
+class MovieAdapter(val itemClick: (Movie) -> Unit = {}) :
+    BaseAdapter<Movie, ItemMovieBinding>(object : DiffUtil.ItemCallback<Movie>() {
 
-    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem.id == newItem.id
-    }
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem.id == newItem.id && oldItem.title == newItem.title
-    }
-}, itemClickListener) {
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id && oldItem.title == newItem.title
+        }
+    }) {
     override fun getLayout(viewType: Int): Int {
         return R.layout.item_movie
     }
 
+    override fun itemBinding(binding: ItemMovieBinding) {
+        binding.apply {
+            root.setOnClickListener {
+                item?.apply {
+                    itemClick(this)
+                }
+            }
+        }
+    }
 }
