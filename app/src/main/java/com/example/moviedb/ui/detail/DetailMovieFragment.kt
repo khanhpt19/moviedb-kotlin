@@ -27,5 +27,6 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding, DetailMovie
     override fun initComponents(viewBinding: ViewDataBinding) {
         val movie: Movie? = arguments?.getParcelable(MOVIE)
         viewModel.movie.value = movie
+        viewModel.checkFavorite(movie)
     }
 }
