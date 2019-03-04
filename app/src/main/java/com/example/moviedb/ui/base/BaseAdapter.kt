@@ -54,5 +54,5 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
 
     protected open fun bind(binding: ViewBinding, position: Int) {}
 
-    protected open fun itemBinding(binding: ViewBinding) {}
+    abstract fun itemBinding(binding: ViewBinding)
 }

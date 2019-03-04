@@ -14,7 +14,8 @@ class MovieAdapter(val itemClick: (Movie) -> Unit = {}) :
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.id == newItem.id && oldItem.title == newItem.title
+            return oldItem.title == newItem.title && oldItem.posterPath == newItem.posterPath
+                    && oldItem.releaseDate == newItem.releaseDate && oldItem.voteAverage == newItem.voteAverage
         }
     }) {
     override fun getLayout(viewType: Int): Int {

@@ -52,7 +52,7 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
         initComponents(viewBinding)
     }
 
-    abstract fun initComponents(viewBinding: ViewDataBinding)
+    protected open fun initComponents(viewBinding: ViewDataBinding) {}
 
     fun handleErrorMessage(message: String) {
         toast(message)

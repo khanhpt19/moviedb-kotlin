@@ -19,6 +19,6 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
         initComponent(viewBinding)
     }
 
-    abstract fun initComponent(viewBinding: ViewDataBinding)
+    protected open fun initComponent(viewBinding: ViewDataBinding) {}
 
 }
