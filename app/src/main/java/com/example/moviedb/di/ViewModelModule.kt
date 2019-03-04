@@ -1,6 +1,6 @@
 package com.example.moviedb.di
 
-import com.example.moviedb.ui.detail.DetailViewModel
+import com.example.moviedb.ui.detail.DetailMovieViewModel
 import com.example.moviedb.ui.favorite.FavoriteViewModel
 import com.example.moviedb.ui.main.MainViewModel
 import com.example.moviedb.ui.more.MoreViewModel
@@ -13,5 +13,5 @@ val viewModelModule = module {
     viewModel<PopularViewModel>()
     viewModel<FavoriteViewModel>()
     viewModel<MoreViewModel>()
-    viewModel<DetailViewModel>()
+    viewModel<DetailMovieViewModel>()
 }

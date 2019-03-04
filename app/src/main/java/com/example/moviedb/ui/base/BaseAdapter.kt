@@ -10,14 +10,20 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.moviedb.BR
 import java.util.concurrent.Executors
 
-abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUtil.ItemCallback<Item>) :
+abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
+    callBack: DiffUtil.ItemCallback<Item>
+) :
     ListAdapter<Item, BaseViewHolder<ViewBinding>>(
         AsyncDifferConfig.Builder<Item>(callBack)
             .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor()).build()
     ) {
 
     override fun submitList(list: List<Item>?) {
-        super.submitList(ArrayList<Item>(list ?: listOf()))
+        val newList = mutableListOf<Item>()
+        if (list != null) {
+            newList.addAll(list)
+        }
+        super.submitList(newList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> {
@@ -25,7 +31,9 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUt
             DataBindingUtil.inflate<ViewBinding>(
                 LayoutInflater.from(parent.context),
                 getLayout(viewType), parent, false
-            )
+            ).apply {
+                itemBinding(this)
+            }
         )
     }
 
@@ -45,4 +53,6 @@ abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(callBack: DiffUt
     protected open fun bindView(binding: ViewBinding, item: Item, position: Int) {}
 
     protected open fun bind(binding: ViewBinding, position: Int) {}
+
+    abstract fun itemBinding(binding: ViewBinding)
 }
