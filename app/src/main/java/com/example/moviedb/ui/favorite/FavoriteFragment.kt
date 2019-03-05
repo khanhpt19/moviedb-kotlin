@@ -33,7 +33,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel
     }
 
     private fun goToDetail(movie: Movie?) {
-        replaceFragmentToActivity(
+        replaceChildFragment(
             DetailMovieFragment.newInstance(movie),
             R.id.container, DetailMovieFragment.TAG, true
         )

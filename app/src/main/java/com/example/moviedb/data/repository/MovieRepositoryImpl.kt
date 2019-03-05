@@ -12,31 +12,28 @@ class MovieRepositoryImpl(
     val movieDao: MovieDao,
     val schedulerProvider: SchedulerProvider
 ) : MovieRepository {
-    override fun countMovie(id: String?): Int{
-         return movieDao.countMovie(id)
-    }
 
-    override fun removeMovieById(id: String?){
-        return movieDao.removeMovieById(id)
+    override fun removeMovie(id: String?) {
+        movieDao.removeMovie(id)
     }
 
     override fun insertMovie(movie: Movie?) {
-        return movieDao.insert(movie)
+        movieDao.insert(movie)
     }
 
-    override fun getMovieLocal(id: String): Single<Movie> {
+    override fun getMovieById(id: String?): Single<Movie> {
         return movieDao.getMovieById(id)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }
 
     override fun getMoviesLocal(): Single<List<Movie>> {
-        return movieDao.getMovies()
+        return movieDao.getMoviesLocal()
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
     }
 
-    override fun getMovies(hashMap: HashMap<String, String>): Single<MovieResponse> {
+    override fun getMoviesAPI(hashMap: HashMap<String, String>): Single<MovieResponse> {
         return movieAPI.getMoviesPopular(hashMap)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())

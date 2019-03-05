@@ -11,7 +11,7 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
         val hashMap = HashMap<String, String>()
         hashMap.put(Constants.PAGE, "1")
         addDisposable(
-            repository.getMovies(hashMap)
+            repository.getMoviesAPI(hashMap)
                 .subscribe({
                     onLoadSuccess(it.movies)
                 }, {

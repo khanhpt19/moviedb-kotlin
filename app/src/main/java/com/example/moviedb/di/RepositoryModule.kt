@@ -20,7 +20,7 @@ val repositoryModule = module {
 }
 
 fun createAppDatabase(context: Context, dbName: String) =
-    Room.databaseBuilder(context, AppDatabase::class.java, dbName).allowMainThreadQueries().build()
+    Room.databaseBuilder(context, AppDatabase::class.java, dbName).build()
 
 fun createDatabaseName() = Constants.DATABASE_NAME
 

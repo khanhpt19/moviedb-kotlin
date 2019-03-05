@@ -6,15 +6,13 @@ import io.reactivex.Single
 
 interface MovieRepository {
 
-    fun getMovies(hashMap: HashMap<String, String> = HashMap()): Single<MovieResponse>
+    fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): Single<MovieResponse>
 
     fun getMoviesLocal(): Single<List<Movie>>
 
-    fun getMovieLocal(id: String): Single<Movie>
+    fun getMovieById(id: String?): Single<Movie>
 
     fun insertMovie(movie: Movie?)
 
-    fun removeMovieById(id: String?)
-
-    fun countMovie(id: String?): Int
+    fun removeMovie(id: String?)
 }

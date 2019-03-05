@@ -4,24 +4,47 @@ import androidx.lifecycle.MutableLiveData
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.repository.MovieRepository
 import com.example.moviedb.ui.base.BaseViewModel
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class DetailMovieViewModel(val repository: MovieRepository) : BaseViewModel<Movie>() {
     val movie = MutableLiveData<Movie>()
     val isFavorite = MutableLiveData<Boolean>().apply { value = false }
 
     fun checkFavorite(movie: Movie?) {
-        if (repository.countMovie(movie?.id) != 0) {
-            isFavorite.value = true
-        }
+        addDisposable(repository.getMovieById(movie?.id).subscribe({
+            if (it.id == movie?.id) {
+                isFavorite.value = true
+            }
+        }, {
+        }))
+
     }
 
     fun onFavoriteClick() {
         if (isFavorite.value == true) {
-            repository.removeMovieById(movie.value?.id)
-            isFavorite.value = false
+            Completable.fromAction {
+                repository.removeMovie(movie.value?.id)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    isFavorite.value = false
+                }, {
+                    onLoadFail(it)
+                })
         } else {
-            repository.insertMovie(movie.value)
-            isFavorite.value = true
+            Completable.fromAction {
+                repository.insertMovie(movie.value)
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    isFavorite.value = true
+                }, {
+                    onLoadFail(it)
+                })
         }
     }
 }
