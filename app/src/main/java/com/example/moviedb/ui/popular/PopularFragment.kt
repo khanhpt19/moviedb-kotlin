@@ -2,6 +2,7 @@ package com.example.moviedb.ui.popular
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.databinding.FragmentPopularBinding
@@ -10,7 +11,8 @@ import com.example.moviedb.ui.detail.DetailMovieFragment
 import kotlinx.android.synthetic.main.fragment_popular.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>() {
+class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>(), SwipeRefreshLayout.OnRefreshListener {
+    val adapter = MovieAdapter(itemClick = { goToDetail(it) })
 
     companion object {
         val TAG = "POPULAR"
@@ -21,14 +23,22 @@ class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>()
     override val layoutId: Int = R.layout.fragment_popular
 
     override fun initComponents(viewBinding: ViewDataBinding) {
-        val adapter = MovieAdapter(itemClick = { goToDetail(it) })
+        updateRecyclerView()
+        swipe_refresh_layout.setOnRefreshListener(this)
+    }
 
+    override fun onRefresh() {
+        updateRecyclerView()
+        swipe_refresh_layout.isRefreshing = false
+    }
+
+    private fun updateRecyclerView() {
         recycler_view_popular.adapter = adapter
-        viewModel.loadDataPopular()
 
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+        viewModel.loadDataPopular()
     }
 
     private fun goToDetail(movie: Movie?) {
