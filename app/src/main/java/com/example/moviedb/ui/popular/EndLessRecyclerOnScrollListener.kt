@@ -13,21 +13,26 @@ abstract class EndLessRecyclerOnScrollListener : RecyclerView.OnScrollListener()
 
         val visibleItemCount = recyclerView.childCount
         val totalItemCount = recyclerView.layoutManager?.itemCount
-        val firstVisibleItem = (recyclerView
-            .layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        var firstVisibleItem: Int? = 0
+
+        if (recyclerView.layoutManager is LinearLayoutManager) {
+            firstVisibleItem = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        }
 
         if (mLoading) {
-            if (totalItemCount != null) {
+            totalItemCount?.let {
                 if (totalItemCount > mPreviousTotal) {
                     mLoading = false
                     mPreviousTotal = totalItemCount
                 }
             }
         }
-        if (totalItemCount != null) {
-            if (!mLoading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
-                onLoadMore()
-                mLoading = true
+        totalItemCount?.let {
+            firstVisibleItem?.let {
+                if (!mLoading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
+                    onLoadMore()
+                    mLoading = true
+                }
             }
         }
     }

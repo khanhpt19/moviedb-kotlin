@@ -35,13 +35,9 @@ abstract class BaseViewModel<Item>() : ViewModel() {
     }
 
     fun onLoadSuccess(moviesResponse: List<Item>?, type: LoadType) {
-        listMovie = if(type == LoadType.MORE){
-            if (movies.value != null) {
-                movies.value!!
-            } else {
-                ArrayList()
-            }
-        }else{
+        listMovie = if (type == LoadType.MORE) {
+            movies.value?:ArrayList()
+        } else {
             ArrayList()
         }
         listMovie.addAll(moviesResponse ?: listOf())
