@@ -28,7 +28,8 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical"
-                tools:listitem="@layout/item_movie"/>
+                tools:listitem="@layout/item_movie"
+                setOnScroll="@{() -> viewModel.onLoadMore()}"/>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
