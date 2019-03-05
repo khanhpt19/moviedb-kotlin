@@ -32,7 +32,7 @@ class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>()
     }
 
     private fun goToDetail(movie: Movie?) {
-        replaceFragmentToActivity(
+        replaceChildFragment(
             DetailMovieFragment.newInstance(movie),
             R.id.container, DetailMovieFragment.TAG, true
         )

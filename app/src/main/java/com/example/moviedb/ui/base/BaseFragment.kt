@@ -84,7 +84,7 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
             }
     }
 
-    fun replaceFragmentToActivity(
+    fun replaceChildFragment(
         fragment: Fragment, container: Int, TAG: String?, addToBackStack: Boolean = false
     ) {
         activity?.supportFragmentManager?.beginTransaction()?.replace(
@@ -92,7 +92,7 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
         )?.apply { commitTransaction(this, addToBackStack) }
     }
 
-    fun addFragmentToActivity(
+    fun addChildFragment(
         fragment: Fragment, container: Int, TAG: String?, addToBackStack: Boolean = false
     ) {
         activity?.supportFragmentManager?.beginTransaction()?.add(
