@@ -12,17 +12,21 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
     private var mTotalPage: Int = 0
 
     fun loadDataPopular() {
+        showLoading()
         val hashMap = HashMap<String, String>()
         hashMap.put(Constants.PAGE, mPage.toString())
         addDisposable(
             repository.getMoviesAPI(hashMap)
+                .doAfterTerminate { hideLoading() }
                 .subscribe({
-                    if(it != null){
+                    if (it != null) {
                         onLoadSuccess(it.movies, LoadType.MORE)
                         mTotalPage = it.total_pages!!
                     }
+                    hideLoading()
                 }, {
                     onLoadFail(it)
+                    hideLoading()
                 })
         )
     }

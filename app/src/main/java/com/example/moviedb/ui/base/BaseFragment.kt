@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.example.moviedb.BR
 import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewModel<Movie>> : Fragment() {
     lateinit var viewBinding: ViewBinding
@@ -110,5 +111,13 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
     ) {
         if (addToBackStack) transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    fun isShowNavigation(isShow: Boolean) {
+        val bottomNavigationView: BottomNavigationView? = activity?.findViewById(R.id.navigation)
+        if (isShow) {
+            bottomNavigationView?.visibility = View.VISIBLE
+        } else
+            bottomNavigationView?.visibility = View.GONE
     }
 }
