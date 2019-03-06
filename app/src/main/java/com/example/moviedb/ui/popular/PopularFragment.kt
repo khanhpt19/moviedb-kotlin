@@ -23,22 +23,18 @@ class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>()
     override val layoutId: Int = R.layout.fragment_popular
 
     override fun initComponents(viewBinding: ViewDataBinding) {
-        updateRecyclerView()
-        swipe_refresh_layout.setOnRefreshListener(this)
-    }
-
-    override fun onRefresh() {
-        updateRecyclerView()
-        swipe_refresh_layout.isRefreshing = false
-    }
-
-    private fun updateRecyclerView() {
+        isShowNavigation(true)
         recycler_view_popular.adapter = adapter
-
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
         viewModel.loadDataPopular()
+        swipe_refresh_layout.setOnRefreshListener(this)
+    }
+
+    override fun onRefresh() {
+        viewModel.loadDataPopular()
+        swipe_refresh_layout.isRefreshing = false
     }
 
     private fun goToDetail(movie: Movie?) {

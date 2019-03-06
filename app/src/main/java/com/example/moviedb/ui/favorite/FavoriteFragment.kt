@@ -22,7 +22,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel
     override val layoutId: Int = R.layout.fragment_favorite
 
     override fun initComponents(viewBinding: ViewDataBinding) {
-
+        isShowNavigation(true)
         val adapter = MovieAdapter(itemClick = { goToDetail(it) })
         recycler_view_favorite.adapter = adapter
 

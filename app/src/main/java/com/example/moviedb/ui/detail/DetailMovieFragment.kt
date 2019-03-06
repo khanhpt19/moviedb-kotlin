@@ -28,5 +28,6 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding, DetailMovie
         val movie: Movie? = arguments?.getParcelable(MOVIE)
         viewModel.movie.value = movie
         viewModel.checkFavorite(movie)
+        isShowNavigation(false)
     }
 }
