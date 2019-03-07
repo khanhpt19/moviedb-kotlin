@@ -11,14 +11,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/image_back_drop"
             imageSrc="@{viewModel.movie.backdropPath}"
             android:layout_width="0dp"
-            android:scaleType="centerCrop"
             android:layout_height="@dimen/dp_200"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

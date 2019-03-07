@@ -11,8 +11,15 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
     private var mPage: Int = 1
     private var mTotalPage: Int = 0
 
-    fun loadDataPopular() {
-        showLoading()
+    fun loadDataPopular(type: LoadType) {
+        if (type == LoadType.NORMAL) {
+            showLoading()
+        } else if (type == LoadType.MORE) {
+            showLoadingMore()
+        } else if (type == LoadType.REFRESH) {
+            hideLoading()
+            mPage = 1
+        }
         val hashMap = HashMap<String, String>()
         hashMap.put(Constants.PAGE, mPage.toString())
         addDisposable(
@@ -20,7 +27,7 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
                 .doAfterTerminate { hideLoading() }
                 .subscribe({
                     if (it != null) {
-                        onLoadSuccess(it.movies, LoadType.MORE)
+                        onLoadSuccess(it.movies, type)
                         mTotalPage = it.total_pages!!
                     }
                     hideLoading()
@@ -34,7 +41,7 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
     fun onLoadMore() {
         ++mPage
         if (mPage < mTotalPage) {
-            loadDataPopular()
+            loadDataPopular(LoadType.MORE)
         }
         return
     }
