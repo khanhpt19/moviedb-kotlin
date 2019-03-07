@@ -33,9 +33,6 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel
     }
 
     private fun goToDetail(movie: Movie?) {
-        replaceChildFragment(
-            DetailMovieFragment.newInstance(movie),
-            R.id.container, DetailMovieFragment.TAG, true
-        )
+        addChildFragment(DetailMovieFragment.newInstance(movie), R.id.container, DetailMovieFragment.TAG, true)
     }
 }

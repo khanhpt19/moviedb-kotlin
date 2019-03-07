@@ -8,6 +8,7 @@ import com.example.moviedb.data.model.Movie
 import com.example.moviedb.databinding.FragmentPopularBinding
 import com.example.moviedb.ui.base.BaseFragment
 import com.example.moviedb.ui.detail.DetailMovieFragment
+import com.example.moviedb.utils.LoadType
 import kotlinx.android.synthetic.main.fragment_popular.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,19 +29,16 @@ class PopularFragment : BaseFragment<FragmentPopularBinding, PopularViewModel>()
         viewModel.movies.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
-        viewModel.loadDataPopular()
+        viewModel.loadDataPopular(LoadType.NORMAL)
         swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun onRefresh() {
-        viewModel.loadDataPopular()
+        viewModel.loadDataPopular(LoadType.REFRESH)
         swipe_refresh_layout.isRefreshing = false
     }
 
     private fun goToDetail(movie: Movie?) {
-        replaceChildFragment(
-            DetailMovieFragment.newInstance(movie),
-            R.id.container, DetailMovieFragment.TAG, true
-        )
+        addChildFragment(DetailMovieFragment.newInstance(movie), R.id.container, DetailMovieFragment.TAG, true)
     }
 }

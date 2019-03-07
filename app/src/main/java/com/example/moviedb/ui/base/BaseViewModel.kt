@@ -11,6 +11,7 @@ abstract class BaseViewModel<Item>() : ViewModel() {
     val errorLoading = MutableLiveData<String>()
     val movies = MutableLiveData<ArrayList<Item>>()
     var listMovie = ArrayList<Item>()
+    val isLoadingMore = MutableLiveData<Boolean>()
 
     val compositeDisposable = CompositeDisposable()
 
@@ -24,6 +25,11 @@ abstract class BaseViewModel<Item>() : ViewModel() {
 
     fun hideLoading() {
         isLoading.value = false
+        isLoadingMore.value = false
+    }
+
+    fun showLoadingMore() {
+        isLoadingMore.value = true
     }
 
     fun showError(e: Throwable) {
@@ -35,11 +41,16 @@ abstract class BaseViewModel<Item>() : ViewModel() {
     }
 
     fun onLoadSuccess(moviesResponse: List<Item>?, type: LoadType) {
-        listMovie = if (type == LoadType.MORE) {
-            movies.value?:ArrayList()
-        } else {
-            ArrayList()
+        if (type == LoadType.MORE) {
+            listMovie = if (movies.value != null) {
+                movies.value!!
+            } else {
+                ArrayList()
+            }
+        } else if (type == LoadType.REFRESH || type == LoadType.NORMAL) {
+            listMovie = ArrayList()
         }
+
         listMovie.addAll(moviesResponse ?: listOf())
         movies.value = listMovie
     }
