@@ -29,5 +29,6 @@ class DetailMovieFragment : BaseFragment<FragmentDetailMovieBinding, DetailMovie
         viewModel.movie.value = movie
         viewModel.checkFavorite(movie)
         isShowNavigation(false)
+        setTitleToolbar(movie?.title.toString())
     }
 }
