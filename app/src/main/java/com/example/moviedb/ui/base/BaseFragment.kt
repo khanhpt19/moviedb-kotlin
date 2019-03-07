@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -119,5 +120,17 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
             bottomNavigationView?.visibility = View.VISIBLE
         } else
             bottomNavigationView?.visibility = View.GONE
+    }
+
+    fun setTitleToolbar(titleToolbar: String) {
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).apply {
+                supportActionBar?.apply {
+                    title = titleToolbar
+                    setDisplayHomeAsUpEnabled(true)
+                    setDisplayShowHomeEnabled(true)
+                }
+            }
+        }
     }
 }

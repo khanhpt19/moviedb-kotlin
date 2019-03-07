@@ -1,5 +1,6 @@
 package com.example.moviedb.ui.main
 
+import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.moviedb.R
@@ -15,13 +16,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val viewModel by viewModel<MainViewModel>()
     override val layoutId: Int = R.layout.activity_main
 
-    override fun initComponent(viewBinding: ViewDataBinding) {
+    override fun initComponent(viewBinding: ViewDataBinding, savedInstanceState: Bundle?) {
+        if(savedInstanceState == null)
         replaceFragment(PopularFragment.newInstance(), PopularFragment.TAG)
 
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_popular -> {
-                    replaceFragment(PopularFragment.newInstance(), PopularFragment.TAG)
+                    var fragment = findFragmentByTag(PopularFragment.TAG)
+                    if(fragment == null){
+                        fragment = PopularFragment.newInstance()
+                    }
+                    replaceFragment(fragment, PopularFragment.TAG)
                     true
                 }
                 R.id.nav_favorite
@@ -31,7 +37,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
                 R.id.nav_more
                 -> {
-                    replaceFragment(MoreFragment.newInstance(), MoreFragment.TAG)
+                    var fragment = findFragmentByTag(MoreFragment.TAG)
+                    if(fragment == null){
+                        fragment = MoreFragment.newInstance()
+                    }
+                    replaceFragment(fragment, MoreFragment.TAG)
                     true
                 }
                 else -> false
