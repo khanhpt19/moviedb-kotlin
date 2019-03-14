@@ -1,5 +1,6 @@
 package com.example.moviedb.ui.popular
 
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
