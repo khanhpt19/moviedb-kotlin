@@ -52,7 +52,7 @@ abstract class BaseViewModel<Item>() : ViewModel() {
         }
 
         listMovie.addAll(moviesResponse ?: listOf())
-        movies.value = listMovie
+        movies.postValue(listMovie)
     }
 
     fun onLoadFail(throwable: Throwable) {

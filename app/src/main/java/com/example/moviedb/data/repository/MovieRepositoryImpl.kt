@@ -9,6 +9,7 @@ import com.example.moviedb.ui.more.AppExecutors
 import com.example.moviedb.ui.more.RemoteDataNotFoundException
 import com.example.moviedb.ui.more.Result
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
@@ -18,8 +19,19 @@ class MovieRepositoryImpl(
     val schedulerProvider: SchedulerProvider,
     val appExecutors: AppExecutors
 ) : MovieRepository {
-    override suspend fun getMovie(id: String): Movie {
-        return movieAPI.getMovieDetail(id).await()
+
+//    override fun getMovie(id: String): Deferred<Movie> {
+//        return movieAPI.getMovieDetail(id)
+//    }
+
+    override suspend fun getMovie(id: String): Result<Movie> = withContext(appExecutors.networkContext) {
+        val request = movieAPI.getMovieDetail(id)
+        try {
+            val response = request.await()
+            Result.Success(response)
+        } catch (e: HttpException) {
+            Result.Error(RemoteDataNotFoundException())
+        }
     }
 
     override fun removeMovie(id: String?) {
