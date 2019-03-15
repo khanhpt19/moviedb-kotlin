@@ -11,7 +11,9 @@ interface MovieRepository {
 
     suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): Result<MovieResponse>
 
-    suspend fun getMovie(@Path("id") id: String): Movie
+//    fun getMovie(@Path("id") id: String): Deferred<Movie>
+
+    suspend fun getMovie(@Path("id") id: String): Result<Movie>
 
     fun getMoviesLocal(): Single<List<Movie>>
 

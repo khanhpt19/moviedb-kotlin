@@ -9,7 +9,7 @@ import com.example.moviedb.utils.LoadType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
 class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>() {
@@ -36,22 +36,12 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
         val hashMap = HashMap<String, String>()
         hashMap[Constants.PAGE] = mPage.toString()
 
-        scope.launch {
+        scope.async {
             isLoading.postValue(false)
             isLoadingMore.postValue(false)
             val movieResponse = repository.getMoviesAPI(hashMap)
             if (movieResponse is Result.Success) {
-                if (type == LoadType.MORE) {
-                    listMovie = if (movies.value != null) {
-                        movies.value!!
-                    } else {
-                        ArrayList()
-                    }
-                } else if (type == LoadType.REFRESH || type == LoadType.NORMAL) {
-                    listMovie = ArrayList()
-                }
-                listMovie.addAll(movieResponse.data.movies ?: listOf())
-                movies.postValue(listMovie)
+                onLoadSuccess(movieResponse.data.movies, type)
             }
         }
     }
