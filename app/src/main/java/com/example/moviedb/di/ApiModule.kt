@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.moviedb.BuildConfig
 import com.example.moviedb.data.remote.api.MovieApi
 import com.example.moviedb.di.Properties.TIME_OUT
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -69,7 +70,7 @@ fun createOkHttpClient(
 
 fun createAppRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BuildConfig.END_POINT_URL)
         .client(okHttpClient)

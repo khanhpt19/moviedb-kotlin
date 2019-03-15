@@ -18,5 +18,7 @@ class MoreFragment : BaseFragment<FragmentMoreBinding, MoreViewModel>() {
 
     override fun initComponents(viewBinding: ViewDataBinding) {
 
+        viewModel.loadMovie("299536")
     }
+
 }
