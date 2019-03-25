@@ -2,24 +2,22 @@ package com.example.moviedb.data.repository
 
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.remote.response.MovieResponse
-import com.example.moviedb.ui.more.Result
-import io.reactivex.Single
-import kotlinx.coroutines.Deferred
 import retrofit2.http.Path
 
 interface MovieRepository {
 
-    suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): Result<MovieResponse>
+//    suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): Result<MovieResponse>
+//    suspend fun getMovie(@Path("id") id: String): Result<Movie>
 
-//    fun getMovie(@Path("id") id: String): Deferred<Movie>
+    suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): MovieResponse
 
-    suspend fun getMovie(@Path("id") id: String): Result<Movie>
+    suspend fun getMovie(@Path("id") id: String): Movie
 
-    fun getMoviesLocal(): Single<List<Movie>>
+    suspend fun getMoviesLocal(): List<Movie>?
 
-    fun getMovieById(id: String?): Single<Movie>
+    suspend fun getMovieById(id: String?): Movie?
 
-    fun insertMovie(movie: Movie?)
+    suspend fun insertMovie(movie: Movie?)
 
-    fun removeMovie(id: String?)
+    suspend fun removeMovie(id: String?)
 }

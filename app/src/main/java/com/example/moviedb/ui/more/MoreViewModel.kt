@@ -4,26 +4,22 @@ import androidx.lifecycle.MutableLiveData
 import com.example.moviedb.data.model.Movie
 import com.example.moviedb.data.repository.MovieRepository
 import com.example.moviedb.ui.base.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.withContext
 
 class MoreViewModel(val repository: MovieRepository) : BaseViewModel<Movie>() {
     val movieCoroutine = MutableLiveData<Movie>()
-    private val parentJob = Job()
-
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-
-    private val scope = CoroutineScope(coroutineContext)
 
     fun loadMovie(id: String) {
-        scope.async {
-            val movie = repository.getMovie(id)
-            if(movie is Result.Success)
-            movieCoroutine.postValue(movie.data)
+        ioScope.async {
+            try {
+                val movieResponse = repository.getMovie(id)
+                withContext(uiContext){
+                    movieCoroutine.value = movieResponse
+                }
+            } catch (e: Exception) {
+                onLoadFail(e)
+            }
         }
     }
 }

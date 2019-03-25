@@ -1,23 +1,25 @@
 package com.example.moviedb.data.local.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
 import com.example.moviedb.data.model.Movie
-import io.reactivex.Single
 
 @Dao
 interface MovieDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: Movie?)
+    @Insert
+    suspend fun insert(movie: Movie?)
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    fun getMovieById(id: String?): Single<Movie>
+    suspend fun getMovieById(id: String?): Movie?
 
     @Query("SELECT * FROM movie")
-    fun getMoviesLocal(): Single<List<Movie>>
+    suspend fun getMoviesLocal(): List<Movie>?
 
     @Delete
-    fun removeMovie(movie: Movie)
+    suspend fun removeMovie(movie: Movie)
 
     @Query("DELETE FROM movie WHERE id = :id")
-    fun removeMovie(id: String?)
+    suspend fun removeMovie(id: String?)
 }
