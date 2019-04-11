@@ -47,7 +47,7 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding, ViewModel : BaseViewM
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.apply {
-            errorLoading.observe(viewLifecycleOwner, Observer {
+            errorMessage.observe(viewLifecycleOwner, Observer {
                 handleErrorMessage(it)
             })
         }

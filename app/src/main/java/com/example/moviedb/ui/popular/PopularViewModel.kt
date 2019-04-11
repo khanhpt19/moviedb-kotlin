@@ -6,12 +6,10 @@ import com.example.moviedb.ui.base.BaseViewModel
 import com.example.moviedb.utils.Constants
 import com.example.moviedb.utils.LoadType
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 
 class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>() {
 
     private var mPage: Int = 1
-    private var mTotalPage: Int = 0
 
     fun loadDataPopular(type: LoadType) {
         if (type == LoadType.NORMAL) {
@@ -27,10 +25,7 @@ class PopularViewModel(val repository: MovieRepository) : BaseViewModel<Movie>()
 
         ioScope.async {
             try {
-                val movieResponse = repository.getMoviesAPI(hashMap)
-                withContext(uiContext) {
-                    onLoadSuccess(movieResponse.movies, type)
-                }
+                onLoadSuccess(repository.getMoviesAPI(hashMap).movies, type)
             } catch (e: Exception) {
                 onLoadFail(e)
             }
