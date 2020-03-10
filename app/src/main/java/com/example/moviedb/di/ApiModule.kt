@@ -72,7 +72,7 @@ fun createAppRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BuildConfig.END_POINT_URL)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
         .build()
 }
