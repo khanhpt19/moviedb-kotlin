@@ -7,7 +7,6 @@ import com.example.moviedb.data.local.pref.AppPrefs
 import com.example.moviedb.data.local.pref.PrefHelper
 import com.example.moviedb.data.repository.MovieRepository
 import com.example.moviedb.data.repository.MovieRepositoryImpl
-import com.example.moviedb.ui.more.AppExecutors
 import com.example.moviedb.utils.Constants
 import org.koin.dsl.module.module
 import org.koin.experimental.builder.create
@@ -18,7 +17,6 @@ val repositoryModule = module {
     single<MovieRepository> { create<MovieRepositoryImpl>() }
     single { createDatabaseName() }
     single { createMovieDao(get()) }
-    single { create<AppExecutors>() }
 }
 
 fun createAppDatabase(context: Context, dbName: String) =

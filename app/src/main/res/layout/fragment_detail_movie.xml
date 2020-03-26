@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,16 +15,47 @@
         android:layout_height="match_parent"
         android:background="@android:color/white">
 
-        <ImageView
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@android:color/white">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="@dimen/dp_16"
+                android:src="@drawable/ic_back_white" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:text="@{viewModel.movie.title}"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_18"
+                tools:text="Star Wars" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_back_drop"
             imageSrc="@{viewModel.movie.backdropPath}"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_200"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,23 +63,27 @@
             android:text="@{viewModel.movie.title}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/sp_20"
-            app:layout_constraintEnd_toStartOf="@id/button_bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_back_drop" />
+            app:layout_constraintTop_toBottomOf="@id/image_back_drop"
+            tools:text="Star Wars" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:background="@null"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:background="@android:color/white"
             android:onClick="@{() -> viewModel.onFavoriteClick()}"
             android:src="@{viewModel.isFavorite ? @drawable/ic_bookmarked : @drawable/ic_none_bookmark}"
+            app:backgroundTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_back_drop" />
+            app:maxImageSize="@dimen/dp_50"
+            tools:src="@drawable/ic_bookmarked" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -55,6 +91,7 @@
             android:text="@{viewModel.movie.overview}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_title" />
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            tools:text="@tools:sample/lorem/random" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

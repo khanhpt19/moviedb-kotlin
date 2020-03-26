@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -9,52 +8,14 @@
             type="com.example.moviedb.ui.more.MoreViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/image_back_drop"
-            imageSrc="@{viewModel.movieCoroutine.backdropPath}"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_200"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="0dp"
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_8"
-            android:text="Example Coroutine"
-            android:gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/sp_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_back_drop" />
-
-        <TextView
-            android:id="@+id/text_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_8"
-            android:text="@{viewModel.movieCoroutine.title}"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/sp_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text" />
-
-        <TextView
-            android:id="@+id/text_overview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_8"
-            android:text="@{viewModel.movieCoroutine.overview}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_title" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_centerInParent="true"
+            android:text="Coming soon" />
+    </RelativeLayout>
 </layout>

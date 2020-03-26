@@ -2,31 +2,162 @@ package com.example.moviedb.ui.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviedb.utils.LoadType
+import androidx.lifecycle.viewModelScope
+import com.example.moviedb.data.model.Dialog
+import com.example.moviedb.data.model.Tag
+import com.example.moviedb.data.remote.factory.BaseException
+import com.example.moviedb.utils.SingleLiveData
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.*
+import java.net.ConnectException
+import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
-abstract class BaseViewModel<Item>() : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>()
-    val errorMessage = MutableLiveData<String>()
-    val movies = MutableLiveData<ArrayList<Item>>()
-    var listMovie = ArrayList<Item>()
+    val errorMessage = SingleLiveData<String>()
     val isLoadingMore = MutableLiveData<Boolean>()
+    var navBackClick = SingleLiveData<Unit>()
 
-    //coroutines
-    val parentJob = SupervisorJob()
-    val ioContext = parentJob + Dispatchers.IO
-    val uiContext = parentJob + Dispatchers.Main
-    val ioScope = CoroutineScope(ioContext)
-    val uiScope = CoroutineScope(uiContext)
+    val compositeDisposable = CompositeDisposable()
 
-    val handler = CoroutineExceptionHandler { _, throwable ->
-        uiScope.launch {
+    val snackBarMessage = MutableLiveData<String>()
+    val toastMessage = MutableLiveData<String>()
+    val inlineException = MutableLiveData<List<Tag>>()
+    val alertException = MutableLiveData<Pair<String?, String>>()
+    val dialogException = MutableLiveData<Dialog>()
+    val redirectException = MutableLiveData<ProcessBuilder.Redirect>()
+
+    // fail to refresh expired token
+    val refreshTokenExpired = SingleLiveData<Unit>()
+    // force update app
+    val forceUpdateApp = SingleLiveData<Unit>()
+    val unexpectedError = SingleLiveData<Unit>()
+    val httpUnavailableError = SingleLiveData<Unit>()
+    val rxMapperError = SingleLiveData<Unit>()
+    val httpForbiddenError = SingleLiveData<Unit>()
+    val httpGatewayTimeoutError = SingleLiveData<Unit>()
+    // exception handler for coroutine
+    private val exceptionHandler = CoroutineExceptionHandler { context, throwable ->
+        viewModelScope.launch {
             onLoadFail(throwable)
         }
     }
+    protected val viewModelScopeExceptionHandler = viewModelScope + exceptionHandler
 
-    val ioScopeError = CoroutineScope(ioContext + handler)
-    val uiScopeError = CoroutineScope(uiContext + handler)
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
+    }
+
+    open fun onError(throwable: Throwable) {
+        val rxMapperNullErrorMessage = "The mapper function returned a null value."
+        when (throwable) {
+            is BaseException -> {
+                when (throwable.httpCode) {
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        unexpectedError.call()
+                    }
+                    HttpURLConnection.HTTP_UNAVAILABLE -> {
+                        httpUnavailableError.call()
+                    }
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        httpForbiddenError.call()
+                    }
+                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> {
+                        httpGatewayTimeoutError.call()
+                    }
+                    else -> {
+                        when (throwable.cause) {
+                            is UnknownHostException -> {
+                                httpGatewayTimeoutError.call()
+                            }
+                            is ConnectException -> {
+                                httpGatewayTimeoutError.call()
+                            }
+                            is SocketTimeoutException -> {
+                                httpGatewayTimeoutError.call()
+                            }
+                            else -> {
+                                val message = throwable.message
+                                when {
+                                    message?.contains(rxMapperNullErrorMessage) == true -> {
+                                        rxMapperError.call()
+                                    }
+                                    else -> {
+                                        unexpectedError.call()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else -> {
+                val message = throwable.message
+                when {
+                    message?.contains(rxMapperNullErrorMessage) == true -> {
+                        rxMapperError.call()
+                    }
+                    else -> {
+                        unexpectedError.call()
+                    }
+                }
+            }
+        }
+        hideLoading()
+    }
+
+    open suspend fun onLoadFail(throwable: Throwable) {
+        withContext(Dispatchers.Main) {
+            when (throwable) {
+                is BaseException -> {
+                    when (throwable.httpCode) {
+                        HttpURLConnection.HTTP_BAD_REQUEST -> {
+                            unexpectedError.call()
+                        }
+                        HttpURLConnection.HTTP_UNAVAILABLE -> {
+                            httpUnavailableError.call()
+                        }
+                        HttpURLConnection.HTTP_FORBIDDEN -> {
+                            httpForbiddenError.call()
+                        }
+                        HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> {
+                            httpGatewayTimeoutError.call()
+                        }
+                        else -> {
+                            when (throwable.cause) {
+                                is UnknownHostException -> {
+                                    httpGatewayTimeoutError.call()
+                                }
+                                is ConnectException -> {
+                                    httpGatewayTimeoutError.call()
+                                }
+                                is SocketTimeoutException -> {
+                                    httpGatewayTimeoutError.call()
+                                }
+                                else -> {
+                                    val message = throwable.message
+
+                                    unexpectedError.call()
+                                }
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    unexpectedError.call()
+                }
+            }
+            hideLoading()
+        }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.dispose()
+        super.onCleared()
+    }
 
     fun showLoading() {
         isLoading.value = true
@@ -34,42 +165,9 @@ abstract class BaseViewModel<Item>() : ViewModel() {
 
     fun hideLoading() {
         isLoading.value = false
-        isLoadingMore.value = false
     }
 
-    fun showLoadingMore() {
-        isLoadingMore.value = true
-    }
-
-    fun showError(e: Throwable) {
-        errorMessage.value = e.message
-    }
-
-    fun onDestroy() {
-        parentJob.cancel()
-    }
-
-    suspend fun onLoadSuccess(moviesResponse: List<Item>?, type: LoadType) {
-        withContext(uiContext) {
-            hideLoading()
-            if (type == LoadType.MORE) {
-                listMovie = if (movies.value != null) {
-                    movies.value!!
-                } else {
-                    ArrayList()
-                }
-            } else if (type == LoadType.REFRESH || type == LoadType.NORMAL) {
-                listMovie = ArrayList()
-            }
-            listMovie.addAll(moviesResponse ?: listOf())
-            movies.value = listMovie
-        }
-    }
-
-    suspend fun onLoadFail(throwable: Throwable) {
-        withContext(uiContext) {
-            hideLoading()
-            errorMessage.value = throwable.toString()
-        }
+    fun showMessageError(e: String) {
+        errorMessage.value = e
     }
 }

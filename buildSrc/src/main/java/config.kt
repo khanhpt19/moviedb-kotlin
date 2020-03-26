@@ -56,6 +56,7 @@ object Versions {
     internal const val firebaseAnalytics = "17.2.1"
     internal const val firebaseMessaging = "20.1.0"
     internal const val crashAnalytics = "2.10.1"
+    internal const val firebaseAuth = "19.2.0"
     internal const val shimmer = "0.5.0"
     internal const val viewPager2 = "1.0.0"
 }
@@ -261,6 +262,7 @@ object Libs {
     const val firebaseMessaging =
         "com.google.firebase:firebase-messaging:${Versions.firebaseMessaging}"
     const val crashAnalytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashAnalytics}"
+    const val firebaseAuth = "com.google.firebase:firebase-auth:${Versions.firebaseAuth}"
 
     const val viewPager2 = "androidx.viewpager2:viewpager2:${Versions.viewPager2}"
     const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmer}"
