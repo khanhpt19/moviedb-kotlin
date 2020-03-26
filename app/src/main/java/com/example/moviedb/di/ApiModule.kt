@@ -3,6 +3,7 @@ package com.example.moviedb.di
 import android.content.Context
 import com.example.moviedb.BuildConfig
 import com.example.moviedb.data.remote.api.MovieApi
+import com.example.moviedb.data.remote.factory.RxErrorHandlingFactory
 import com.example.moviedb.di.Properties.TIME_OUT
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Cache
@@ -25,7 +26,7 @@ val networkModule = module {
 }
 
 object Properties {
-    const val TIME_OUT = 10
+    const val TIME_OUT = 10L
 }
 
 fun createOkHttpCache(context: Context): Cache {
@@ -61,8 +62,9 @@ fun createOkHttpClient(
 ): OkHttpClient {
     return OkHttpClient.Builder()
         .cache(cache)
-        .connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
-        .readTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
+        .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .readTimeout(TIME_OUT, TimeUnit.SECONDS)
         .addInterceptor(header)
         .addInterceptor(logging)
         .build()

@@ -14,12 +14,9 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE id = :id")
     suspend fun getMovieById(id: String?): Movie?
 
-    @Query("SELECT * FROM movie")
-    suspend fun getMoviesLocal(): List<Movie>?
-
-    @Delete
-    suspend fun removeMovie(movie: Movie)
-
     @Query("DELETE FROM movie WHERE id = :id")
     suspend fun removeMovie(id: String?)
+
+    @Query("SELECT * FROM movie LIMIT :pageSize OFFSET ((:pageIndex-1)*:pageSize) ")
+    suspend fun getMoviesLocal(pageSize: Int, pageIndex: Int): List<Movie>?
 }

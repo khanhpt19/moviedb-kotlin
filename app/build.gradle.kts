@@ -174,6 +174,7 @@ dependencies {
     // Firebase analytics & fabric
     implementation(Libs.firebaseAnalytics)
     implementation(Libs.crashAnalytics)
+    implementation(Libs.firebaseAuth)
     implementation(Libs.firebaseMessaging)
 
     implementation(Libs.viewPager2)

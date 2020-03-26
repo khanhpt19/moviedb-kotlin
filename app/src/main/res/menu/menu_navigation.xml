@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_popular"
+        android:id="@+id/navPopular"
         android:icon="@drawable/ic_popular"
         android:title="@string/title_popular" />
 
     <item
-        android:id="@+id/nav_favorite"
+        android:id="@+id/navFavorite"
         android:icon="@drawable/ic_favorite"
         android:title="@string/title_favorite" />
 
     <item
-        android:id="@+id/nav_more"
+        android:id="@+id/navMore"
         android:icon="@drawable/ic_more"
         android:title="@string/title_more" />
 

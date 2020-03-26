@@ -6,16 +6,13 @@ import retrofit2.http.Path
 
 interface MovieRepository {
 
-//    suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): Result<MovieResponse>
-//    suspend fun getMovie(@Path("id") id: String): Result<Movie>
-
-    suspend fun getMoviesAPI(hashMap: HashMap<String, String> = HashMap()): MovieResponse
+    suspend fun getMovies(hashMap: HashMap<String, String> = HashMap()): MovieResponse
 
     suspend fun getMovie(@Path("id") id: String): Movie
 
-    suspend fun getMoviesLocal(): List<Movie>?
+    suspend fun getMoviesLocal(pageSize: Int, pageIndex: Int): List<Movie>?
 
-    suspend fun getMovieById(id: String?): Movie?
+    suspend fun getMovieLocal(id: String?): Movie?
 
     suspend fun insertMovie(movie: Movie?)
 

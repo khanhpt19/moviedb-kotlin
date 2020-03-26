@@ -7,52 +7,62 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moviedb.BR
 import java.util.concurrent.Executors
 
 abstract class BaseAdapter<Item, ViewBinding : ViewDataBinding>(
     callBack: DiffUtil.ItemCallback<Item>
-) :
-    ListAdapter<Item, BaseViewHolder<ViewBinding>>(
-        AsyncDifferConfig.Builder<Item>(callBack)
-            .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor()).build()
-    ) {
+) : ListAdapter<Item, BaseViewHolder<ViewBinding>>(
+    AsyncDifferConfig.Builder<Item>(callBack)
+        .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
+        .build()
+) {
 
+    /**
+     * override this with new list to pass check "if (newList == mList)" in AsyncListDiffer
+     */
     override fun submitList(list: List<Item>?) {
-        val newList = mutableListOf<Item>()
-        if (list != null) {
-            newList.addAll(list)
-        }
-        super.submitList(newList)
+        super.submitList(ArrayList<Item>(list ?: listOf()))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> {
-        return BaseViewHolder(
-            DataBindingUtil.inflate<ViewBinding>(
-                LayoutInflater.from(parent.context),
-                getLayout(viewType), parent, false
-            ).apply {
-                itemBinding(this)
-            }
-        )
+        return BaseViewHolder(DataBindingUtil.inflate<ViewBinding>(
+            LayoutInflater.from(parent.context),
+            getLayoutRes(viewType),
+            parent, false
+        ).apply {
+            bindFirstTime(this)
+        })
     }
 
-    protected abstract fun getLayout(viewType: Int): Int
-
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
-        try {
-            val item: Item = getItem(position)
-            holder.binding.setVariable(BR.item, item)
+        val item: Item? = currentList.getOrNull(position)
+        holder.binding.setVariable(BR.item, item)
+        if (item != null) {
             bindView(holder.binding, item, position)
-        } catch (e: IndexOutOfBoundsException) {
-            bind(holder.binding, position)
         }
         holder.binding.executePendingBindings()
     }
 
+    /**
+     * get layout res
+     */
+    protected abstract fun getLayoutRes(viewType: Int): Int
+
+    /**
+     * bind first time
+     * use for set item onClickListener, something only set one time
+     */
+    protected open fun bindFirstTime(binding: ViewBinding) {}
+
+    /**
+     * bind view
+     */
     protected open fun bindView(binding: ViewBinding, item: Item, position: Int) {}
 
-    protected open fun bind(binding: ViewBinding, position: Int) {}
-
-    abstract fun itemBinding(binding: ViewBinding)
 }
+
+open class BaseViewHolder<ViewBinding : ViewDataBinding>(
+    val binding: ViewBinding
+) : RecyclerView.ViewHolder(binding.root)

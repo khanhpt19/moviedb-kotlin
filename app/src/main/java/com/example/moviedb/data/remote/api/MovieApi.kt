@@ -10,9 +10,9 @@ import retrofit2.http.QueryMap
 
 interface MovieApi {
     @GET("movie/popular")
-    fun getMoviesPopular(@QueryMap hashMap: HashMap<String, String> = HashMap()): Deferred<MovieResponse>
+    suspend fun getMoviesPopular(@QueryMap hashMap: HashMap<String, String> = HashMap()): MovieResponse
 
     @GET("movie/{id}")
-    fun getMovieDetail(@Path("id") id: String): Deferred<Movie>
+    suspend fun getMovieDetail(@Path("id") id: String): Movie
 
 }
