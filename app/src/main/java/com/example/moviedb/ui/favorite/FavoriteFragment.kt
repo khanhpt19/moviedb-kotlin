@@ -1,6 +1,7 @@
 package com.example.moviedb.ui.favorite
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedb.R
@@ -11,7 +12,7 @@ import com.example.moviedb.ui.detail.DetailMovieFragment
 import com.example.moviedb.ui.popular.MoviesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteFragment:
+class FavoriteFragment :
     BaseLoadMoreRefreshFragment<FragmentLoadmoreRefreshBinding, FavoriteViewModel, Movie>() {
     override val viewModel by viewModel<FavoriteViewModel>()
 
@@ -22,6 +23,10 @@ class FavoriteFragment:
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 this.adapter = adapter
+            }
+            shimmerLayout.apply {
+                stopShimmer()
+                visibility = View.GONE
             }
         }
 
