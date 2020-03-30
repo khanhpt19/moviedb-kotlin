@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 abstract class BaseViewModel : ViewModel() {
-    val isLoading = MutableLiveData<Boolean>()
+    val isLoading = MutableLiveData<Boolean>().apply { value = false }
     val errorMessage = SingleLiveData<String>()
     val isLoadingMore = MutableLiveData<Boolean>()
     var navBackClick = SingleLiveData<Unit>()
