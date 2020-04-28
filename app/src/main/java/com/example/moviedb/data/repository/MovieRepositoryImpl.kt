@@ -33,4 +33,7 @@ class MovieRepositoryImpl(
     override suspend fun getMovies(hashMap: HashMap<String, String>): MovieResponse {
         return movieAPI.getMoviesPopular(hashMap)
     }
+
+    override suspend fun searchMovies(query: String, page: Int): MovieResponse =
+        movieAPI.searchMovies(query, page)
 }

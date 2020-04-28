@@ -8,6 +8,8 @@ interface MovieRepository {
 
     suspend fun getMovies(hashMap: HashMap<String, String> = HashMap()): MovieResponse
 
+    suspend fun searchMovies(query: String, page: Int): MovieResponse
+
     suspend fun getMovie(@Path("id") id: String): Movie
 
     suspend fun getMoviesLocal(pageSize: Int, pageIndex: Int): List<Movie>?

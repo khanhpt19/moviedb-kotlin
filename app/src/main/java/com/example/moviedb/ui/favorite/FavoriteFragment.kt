@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviedb.R
 import com.example.moviedb.data.model.Movie
+import com.example.moviedb.databinding.FragmentFavoriteBinding
 import com.example.moviedb.databinding.FragmentLoadmoreRefreshBinding
 import com.example.moviedb.ui.base.BaseLoadMoreRefreshFragment
 import com.example.moviedb.ui.detail.DetailMovieFragment
@@ -12,9 +13,9 @@ import com.example.moviedb.ui.popular.MoviesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment:
-    BaseLoadMoreRefreshFragment<FragmentLoadmoreRefreshBinding, FavoriteViewModel, Movie>() {
+    BaseLoadMoreRefreshFragment<FragmentFavoriteBinding, FavoriteViewModel, Movie>() {
     override val viewModel by viewModel<FavoriteViewModel>()
-
+    override val layoutId: Int = R.layout.fragment_favorite
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val adapter = MoviesAdapter(itemClick = { goToDetail(it) })
