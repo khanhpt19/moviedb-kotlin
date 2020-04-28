@@ -11,12 +11,13 @@ class DetailMovieViewModel(private val repository: MovieRepository): BaseViewMod
     val movie = MutableLiveData<Movie>()
     val isFavorite = MutableLiveData<Boolean>().apply { value = false }
 
-    fun checkFavorite(movie: Movie?) {
+    fun checkFavorite(movieCheck: Movie?) {
         viewModelScope.launch {
             try {
-                val favo = repository.getMovieLocal(movie?.id)
-                if (favo?.id == movie?.id) {
+                val favo = repository.getMovieLocal(movieCheck?.id)
+                if (favo?.id == movieCheck?.id) {
                     isFavorite.value = true
+                    movie.value?.isFavorite = true
                 }
             } catch (e: Exception) {
                 onLoadFail(e)
@@ -28,6 +29,7 @@ class DetailMovieViewModel(private val repository: MovieRepository): BaseViewMod
         if (isFavorite.value == true) {
             viewModelScope.launch {
                 try {
+                    movie.value?.isFavorite = false
                     repository.removeMovie(movie.value?.id)
                     isFavorite.value = false
                 } catch (e: Exception) {
@@ -38,6 +40,7 @@ class DetailMovieViewModel(private val repository: MovieRepository): BaseViewMod
         } else {
             viewModelScope.launch {
                 try {
+                    movie.value?.isFavorite = true
                     repository.insertMovie(movie.value)
                     isFavorite.value = true
                 } catch (e: Exception) {
