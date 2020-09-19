@@ -6,6 +6,7 @@ plugins {
     kotlin(GradlePlugins.kotlinAndroid)
     kotlin(GradlePlugins.kotlinApt)
     kotlin(GradlePlugins.kotlinExt)
+    id(GradlePlugins.jaredsburrows)
 }
 
 apply {
