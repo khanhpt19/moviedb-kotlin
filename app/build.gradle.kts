@@ -12,6 +12,8 @@ apply {
     plugin(GradlePlugins.navigationSafeKotlin)
     plugin(GradlePlugins.fabric)
     plugin(GradlePlugins.playService)
+    from("../ktlint.gradle")
+    from("../git-hook.gradle")
 }
 
 android {
