@@ -109,7 +109,7 @@ object AndroidJUnit {
 
 object BuildType {
     const val debug = "debug"
-    const val staging = "staging"
+//    const val staging = "staging"
     const val release = "release"
 
     const val minifyRelease = true
@@ -120,9 +120,9 @@ object BuildType {
     const val isShrinkResourcesDebug = false
     const val proguardDebug = "proguard-rules.pro"
 
-    const val minifyStaging = true
+//    const val minifyStaging = true
     const val isShrinkResourcesStaging = true
-    const val proguardStaging = "proguard-rules.pro"
+//    const val proguardStaging = "proguard-rules.pro"
 }
 
 object Libs {

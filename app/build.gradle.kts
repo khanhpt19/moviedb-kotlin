@@ -12,7 +12,7 @@ apply {
     plugin(GradlePlugins.navigationSafeKotlin)
     plugin(GradlePlugins.fabric)
     plugin(GradlePlugins.playService)
-    from("../ktlint.gradle")
+//    from("../ktlint.gradle")
     from("../git-hook.gradle")
 }
 
@@ -44,13 +44,13 @@ android {
             signingConfig = signingConfigs[BuildType.debug]
         }
 
-        create(BuildType.staging) {
-            isMinifyEnabled = BuildType.minifyStaging
-            isShrinkResources = BuildType.isShrinkResourcesStaging
-
-            proguardFiles(BuildType.proguardStaging)
-            signingConfig = signingConfigs[BuildType.debug]
-        }
+//        create(BuildType.staging) {
+//            isMinifyEnabled = BuildType.minifyStaging
+//            isShrinkResources = BuildType.isShrinkResourcesStaging
+//
+//            proguardFiles(BuildType.proguardStaging)
+//            signingConfig = signingConfigs[BuildType.debug]
+//        }
     }
 
     flavorDimensions("tier")
@@ -58,7 +58,7 @@ android {
     productFlavors {
         create("develop") {
             applicationIdSuffix = ".dev"
-            matchingFallbacks = listOf("debug", "staging")
+            matchingFallbacks = listOf("debug")
         }
 
         create("production") {
@@ -67,7 +67,7 @@ android {
 
         create("mock") {
             applicationIdSuffix = ".mock"
-            matchingFallbacks = listOf("debug", "staging")
+            matchingFallbacks = listOf("debug")
         }
     }
 
