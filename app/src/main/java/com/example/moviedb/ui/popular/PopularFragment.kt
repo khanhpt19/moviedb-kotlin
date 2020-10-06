@@ -58,11 +58,14 @@ class PopularFragment :
             listItem.observe(viewLifecycleOwner, Observer {
                 adapter.submitList(it)
             })
-            firstLoad()
+            if(isBackFromDetail.value == false){
+                firstLoad()
+            }
             titleSearch.observe(viewLifecycleOwner, Observer {
-                loadData(1)
+                if(!it.isNullOrEmpty()){
+                    loadData(1)
+                }
             })
-
         }
     }
 

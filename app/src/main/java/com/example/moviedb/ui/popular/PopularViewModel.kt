@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 class PopularViewModel(private val repository: MovieRepository) :
     BaseLoadMoreRefreshViewModel<Movie>() {
     val titleSearch = MutableLiveData<String>()
+    val isBackFromDetail = MutableLiveData<Boolean>().apply { value = false }
+
     override fun loadData(page: Int) {
         val hashMap = HashMap<String, String>()
         hashMap[Constants.PAGE] = page.toString()
