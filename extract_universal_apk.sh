@@ -6,7 +6,6 @@ BUNDLE_TOOL_DOWNLOAD_URL="https://github.com/google/bundletool/releases/download
 
 curl --location --create-dirs -o $BUNDLE_TOOL $BUNDLE_TOOL_DOWNLOAD_URL
 
-# app/build/releases 配下に aab が書き出されるのでそこから apk を bundletool で書き出し
 aabs=`find $SOURCE_DIR -type f -name *.aab`
 for aab in $aabs
 do
