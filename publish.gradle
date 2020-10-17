@@ -1,30 +1,26 @@
 import java.text.SimpleDateFormat
 
 android {
-    // apk を ${applicationId}_${flavor}_${buildType}_v${version}_${versionCode}_${revision}_${date}.apk に
-    // mapping.txt を mapping-${applicationId}_${flavor}_${buildType}_v${version}_${versionCode}_${revision}_${date}.txt に
-    // リネームして、build/releases にコピーするタスク
+    // publish apk
     def publishAll = project.tasks.create("publishAll")
     android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             if (outputFileName != null && outputFileName.endsWith('.apk')) {
-                def version = versionName.replaceAll("/", "_")  // "ファイル名に/はNG"
+                def version = versionName.replaceAll("/", "_")  
                 def flavor = variant.productFlavors.name.get(0)
                 def buildType = variant.getBuildType().getName()
                 def revision = ["sh", "-c", "cd ${project.rootDir} ; git rev-parse --short HEAD"].execute().in.text.trim()
                 def date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
                 def name = "${applicationId}_${flavor}_${buildType}_v${version}_${versionCode}_${revision}_${date}"
                 def dest = file("$buildDir/releases").path
-
-                // publish${flavor} のタスクを作成
+                
                 def publishEachFlavor
                 try {
                     publishEachFlavor = project.tasks.getByName("publish${flavor.capitalize()}")
                 } catch (UnknownTaskException e) {
                     publishEachFlavor = project.tasks.create("publish${flavor.capitalize()}")
                 }
-
-                // publish${flavor}${buildType} のタスクを作成
+          
                 def task = project.tasks.create("publish${variant.name.capitalize()}", Copy)
                 def outputFile = new File(variant.getPackageApplicationProvider().get().outputs.files[1], outputFileName)
                 task.from(outputFile)
@@ -34,7 +30,6 @@ android {
                 publishEachFlavor.dependsOn task
                 publishAll.dependsOn task
 
-                // mapping.txt をリネームして、build/releases にコピーするタスクを作成
                 if (variant.buildType.isMinifyEnabled()) {
                     def copyMappingTask = project.tasks.create("copy${variant.name.capitalize()}Mapping", Copy)
                     copyMappingTask.from("$buildDir/outputs/mapping/$flavor/$buildType/mapping.txt")
@@ -55,7 +50,7 @@ android {
             println "variant name1: " + variantName
             android.applicationVariants.all { variant ->
                 if (variant.name == variantName) {
-                    def version = versionName.replaceAll("/", "_")  // "ファイル名に/はNG"
+                    def version = versionName.replaceAll("/", "_") 
                     def flavor = variant.productFlavors.name.get(0)
                     def buildType = variant.getBuildType().getName()
                     def revision = ["sh", "-c", "cd ${project.rootDir} ; git rev-parse --short HEAD"].execute().in.text.trim()
