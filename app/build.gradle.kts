@@ -14,6 +14,7 @@ apply {
     plugin(GradlePlugins.playService)
 //    from("../ktlint.gradle")
     from("../git-hook.gradle")
+    from("../publish.gradle")
 }
 
 android {
