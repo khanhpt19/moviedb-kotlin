@@ -1,6 +1,10 @@
 version: 2
 jobs:
   build:
+    filters:
+      branches:
+        only:
+          - develop
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
