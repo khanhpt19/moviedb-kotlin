@@ -51,6 +51,7 @@ object Versions {
 
     internal const val googleService = "4.3.3"
     internal const val fabric = "1.31.2"
+    internal const val jaredsburrows = "0.8.80"
 
     internal const val firebaseCore = "17.2.0"
     internal const val firebaseAnalytics = "17.2.1"
@@ -74,6 +75,7 @@ object BuildPlugins {
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationSafe}"
     const val googleService = "com.google.gms:google-services:${Versions.googleService}"
     const val fabric = "io.fabric.tools:gradle:${Versions.fabric}"
+    const val jaredsburrows = "com.jaredsburrows:gradle-license-plugin:${Versions.jaredsburrows}"
 }
 
 object Android {
@@ -101,6 +103,7 @@ object GradlePlugins {
     const val navigationSafeKotlin = "androidx.navigation.safeargs.kotlin"
     const val fabric = "io.fabric"
     const val playService = "com.google.gms.google-services"
+    const val jaredsburrows = "com.jaredsburrows.license"
 }
 
 object AndroidJUnit {
